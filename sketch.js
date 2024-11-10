@@ -17,8 +17,8 @@ let peopleData = [
 // Colors to randomly assign: Blue, Green, Red
 let colorCycle = ["blue", "green", "red"];
 
-// Map to store randomized color and data assignment per face index
-let faceAssignments = {};
+// Frame counter for controlling reshuffle interval
+let frameCounter = 0;
 
 function preload() {
   // Load the faceMesh model
@@ -34,25 +34,26 @@ function setup() {
   video.hide();
   // Start detecting faces from the webcam video
   faceMesh.detectStart(video, gotFaces);
+
+  // Initial shuffle of data and colors
+  shuffleDataAndColors();
 }
 
 function draw() {
   // Draw the webcam video, resizing to the canvas size
   image(video, 0, 0, width, height);
 
+  // Update frame counter and reshuffle every 120 frames
+  frameCounter++;
+  if (frameCounter % 900 === 0) { // 15 seconds at 60 FPS
+    shuffleDataAndColors();
+  }
+
   // Draw a bounding box around each detected face and add labels
   for (let i = 0; i < faces.length; i++) {
     let face = faces[i];
-
-    // Ensure consistent assignment of data and color to each face index
-    if (!faceAssignments[i]) {
-      faceAssignments[i] = {
-        personData: random(peopleData), 
-        color: random(colorCycle)
-      };
-    }
-    let personData = faceAssignments[i].personData;
-    let color = faceAssignments[i].color;
+    let personData = peopleData[i % peopleData.length]; // Get random personal data from the shuffled array
+    let color = colorCycle[i % colorCycle.length]; // Get random color from the shuffled array
 
     // Set the fill color for the bounding box and text based on the color
     if (color === "blue") {
@@ -73,7 +74,7 @@ function draw() {
       maxY = max(maxY, keypoint.y);
     }
 
-    // Draw the bounding box with the assigned color
+    // Draw the bounding box with the random color
     noFill();
     stroke(color); // Apply the color to the bounding box
     strokeWeight(2);
@@ -91,8 +92,15 @@ function draw() {
   }
 }
 
+// Function to shuffle data and colors
+function shuffleDataAndColors() {
+  shuffle(colorCycle, true);
+  shuffle(peopleData, true);
+}
+
 // Callback function for when faceMesh outputs data
 function gotFaces(results) {
+  // Save the output to the faces variable
   faces = results;
 }
 
