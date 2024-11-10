@@ -5,13 +5,13 @@ let options = { maxFaces: 7, refineLandmarks: false, flipHorizontal: false };
 
 // Simulated database with 7 people
 let peopleData = [
-  { N: "Alice", A: 25, SCS: 700, CFO: 50000, DPV: 70000 },
-  { N: "Bob", A: 35, SCS: 680, CFO: 30000, DPV: 50000 },
-  { N: "Charlie", A: 40, SCS: 750, CFO: 80000, DPV: 120000 },
-  { N: "David", A: 28, SCS: 720, CFO: 60000, DPV: 90000 },
-  { N: "Eve", A: 30, SCS: 690, CFO: 40000, DPV: 60000 },
-  { N: "Frank", A: 33, SCS: 710, CFO: 55000, DPV: 75000 },
-  { N: "Grace", A: 27, SCS: 780, CFO: 65000, DPV: 95000 }
+  { N: "Laosi Niu", A: 39, SCS: 742, CFO: 6790, DPV: 47842 },
+  { N: "Laoban Dai", A: 35, SCS: 432, CFO: 617890891, DPV: 831390 },
+  { N: "Shuai Guo", A: 24, SCS: 542, CFO: 21736, DPV: 3179210 },
+  { N: "Mei Lu", A: 28, SCS: 446, CFO: 745002, DPV: 93628114 },
+  { N: "Penyou Xiao", A: 11, SCS: 830, CFO: 232, DPV: 745752 },
+  { N: "Lingdao Su", A: 53, SCS: 311, CFO: 5324560, DPV: 6185732 },
+  { N: "Jingli Zhong", A: 47, SCS: 395, CFO: 31754, DPV: 412022132 }
 ];
 
 // Colors to randomly assign: Blue, Green, Red
