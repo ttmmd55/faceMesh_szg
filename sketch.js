@@ -5,17 +5,20 @@ let options = { maxFaces: 7, refineLandmarks: false, flipHorizontal: false };
 
 // Simulated database with 7 people
 let peopleData = [
-  { N: "Laosi Niu", A: 39, SCS: 742, CFO: 6790, DPV: 47842 },
-  { N: "Laoban Dai", A: 35, SCS: 432, CFO: 617890891, DPV: 831390 },
-  { N: "Shuai Guo", A: 24, SCS: 542, CFO: 21736, DPV: 3179210 },
-  { N: "Mei Lu", A: 28, SCS: 446, CFO: 745002, DPV: 93628114 },
-  { N: "Penyou Xiao", A: 11, SCS: 830, CFO: 232, DPV: 745752 },
-  { N: "Lingdao Su", A: 53, SCS: 311, CFO: 5324560, DPV: 6185732 },
-  { N: "Jingli Zhong", A: 47, SCS: 395, CFO: 31754, DPV: 412022132 }
+  { N: "Alice", A: 25, SCS: 700, CFO: 50000, DPV: 70000 },
+  { N: "Bob", A: 35, SCS: 680, CFO: 30000, DPV: 50000 },
+  { N: "Charlie", A: 40, SCS: 750, CFO: 80000, DPV: 120000 },
+  { N: "David", A: 28, SCS: 720, CFO: 60000, DPV: 90000 },
+  { N: "Eve", A: 30, SCS: 690, CFO: 40000, DPV: 60000 },
+  { N: "Frank", A: 33, SCS: 710, CFO: 55000, DPV: 75000 },
+  { N: "Grace", A: 27, SCS: 780, CFO: 65000, DPV: 95000 }
 ];
 
-// Colors to cycle through: Blue, Green, Red
+// Colors to randomly assign: Blue, Green, Red
 let colorCycle = ["blue", "green", "red"];
+
+// Frame counter for controlling reshuffle interval
+let frameCounter = 0;
 
 function preload() {
   // Load the faceMesh model
@@ -31,21 +34,28 @@ function setup() {
   video.hide();
   // Start detecting faces from the webcam video
   faceMesh.detectStart(video, gotFaces);
+
+  // Initial shuffle of data and colors
+  shuffleDataAndColors();
 }
 
 function draw() {
   // Draw the webcam video, resizing to the canvas size
   image(video, 0, 0, width, height);
 
+  // Update frame counter and reshuffle every 120 frames
+  frameCounter++;
+  if (frameCounter % 120 === 0) {
+    shuffleDataAndColors();
+  }
+
   // Draw a bounding box around each detected face and add labels
   for (let i = 0; i < faces.length; i++) {
     let face = faces[i];
-    let personData = peopleData[i % peopleData.length]; // Get corresponding personal data
+    let personData = peopleData[i % peopleData.length]; // Get random personal data from the shuffled array
+    let color = colorCycle[i % colorCycle.length]; // Get random color from the shuffled array
 
-    // Cycle through the colors: Blue, Green, Red
-    let color = colorCycle[i % colorCycle.length];
-    
-    // Set the fill color for the bounding box
+    // Set the fill color for the bounding box and text based on the color
     if (color === "blue") {
       fill(0, 0, 255); // Blue
     } else if (color === "green") {
@@ -64,7 +74,7 @@ function draw() {
       maxY = max(maxY, keypoint.y);
     }
 
-    // Draw the bounding box with the selected color
+    // Draw the bounding box with the random color
     noFill();
     stroke(color); // Apply the color to the bounding box
     strokeWeight(2);
@@ -80,6 +90,12 @@ function draw() {
     text(`CFO: ${personData.CFO}`, minX, minY - 20);
     text(`DPV: ${personData.DPV}`, minX, minY);
   }
+}
+
+// Function to shuffle data and colors
+function shuffleDataAndColors() {
+  shuffle(colorCycle, true);
+  shuffle(peopleData, true);
 }
 
 // Callback function for when faceMesh outputs data
